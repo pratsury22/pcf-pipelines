@@ -18,6 +18,13 @@ set -eu
 
 desired_version=$(jq --raw-output '.Release.Version' < ./pivnet-product/metadata.json)
 
+# Deleting th unused products to remove the error which is caused by having different versions of the product. 
+om-linux --target "https://${OPSMAN_DOMAIN_OR_IP_ADDRESS}" \
+   --skip-ssl-validation \
+   --username "${OPSMAN_USERNAME}" \
+   --password "${OPSMAN_PASSWORD}" \
+   delete-unused-products
+
 AVAILABLE=$(om-linux \
   --skip-ssl-validation \
   --username "${OPSMAN_USERNAME}" \
